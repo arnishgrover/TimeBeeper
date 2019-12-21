@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
         paddingLeft: 15
     },
     second: {
-        flex: 1,
+        flex: 0.5,
         borderColor: "white",
         borderWidth: 1
     },
@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     },
     timerStarted: {
         textAlign: 'center',
-        fontSize: 24
+        fontSize: 22
     },
     beeperStartIcon : {
         alignSelf: 'center'
