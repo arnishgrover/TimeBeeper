@@ -4,8 +4,18 @@ import {styles} from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {OutlinedTextField} from 'react-native-material-textfield';
 import {Button} from 'react-native-elements';
+import Sound from 'react-native-sound';
+
+let sound = require('react-native-sound');
+sound.setCategory('Playback');
+let when = new sound('when.mp3', Sound.MAIN_BUNDLE, error => {
+    if(error) {
+        console.log("Failed to load the file");
+    }
+});
 
 class timeInput extends Component {
+    
     fieldRef = React.createRef();
 
     formatText = (text) => {
@@ -18,26 +28,36 @@ class timeInput extends Component {
     };
 
     startTimer = async () => {
-        this.setState({
-            color: 'white',
-        });
         let {current: field} = this.fieldRef;
 
+        this.setState({
+            color: 'white',
+            time: field.value()
+        });
+
         Alert.alert('Time is', field.value());
+        console.log('Starting the timer');
+        console.log("Beeper starting for " + this.state.time + " seconds");
+        await this.startBeeps(this.state.time);
+    };
 
-        await this.startBeeps(field.value());
-
+    startBeeps = async () => {
+        console.log("Beep " + new Date().getTime()/1000);
         this.setState({
             color: 'green',
         });
-        console.log('Starting the timer');
+        await this.playSound();
     };
 
-    startBeeps = async (time) => {
-        this.setState({
-            time: time
-        });
-        console.log("Beeper starting for " + time + " seconds");
+    playSound = async () => {
+        when.play(success => {
+            if(success) {
+                console.log("Sound played successfully");
+            }
+            else {
+                console.log("Error in playing the sound");
+            }
+        })
     };
 
     render() {
